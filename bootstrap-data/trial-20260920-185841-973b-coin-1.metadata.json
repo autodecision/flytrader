@@ -1,0 +1,16 @@
+{
+  "mint": "GTBxUiw6wJdmmkCGZgRHLyYxqu1vG4KtRpeox6yDpump",
+  "kind": "reserve-price-snapshots",
+  "quote_currency": "SOL per token",
+  "bonding_curve": "9JGQ767qGY9ya2PpuXgDMiQL8YNYH3Jms2fyhrBPXsg5",
+  "interval_seconds": 10.0,
+  "volume": "Unavailable; zero disables the volume input",
+  "observations": 120,
+  "selection": {
+    "source": "User-selected coin",
+    "probe_prices": 3,
+    "probe_changes": 2
+  },
+  "activity_screening": true,
+  "market_path": "data/trial-20260920-185841-973b-coin-1.market.jsonl"
+}

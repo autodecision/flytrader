@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Flytrader — Brain workspace</title>
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="stylesheet" href="/style.css">
+  <script defer src="/brain.js"></script><script defer src="/app.js"></script><script defer src="/chart.js"></script><script defer src="/trial.js"></script><script defer src="/review.js"></script>
+</head>
+<body>
+<aside class="sidebar">
+  <a class="brand" href="/"><span>✳</span> flytrader</a>
+  <nav aria-label="Workspace navigation">
+    <a class="nav" href="/" id="nav-home"><span>⌂</span> Home</a>
+    <button class="nav active" data-view="trial"><span>▶</span> Pump.fun trials</button>
+    <button class="nav" data-view="experiment"><span>↺</span> Replay lab</button>
+    <div class="nav-label">ADD MARKET DATA</div>
+    <button class="nav" data-view="capture"><span>⌁</span> Pump.fun</button>
+    <div class="nav-label">YOUR WORKSPACE</div>
+    <button class="nav" data-view="connectome"><span>⌘</span> Brain settings</button>
+    <button class="nav" data-view="history"><span>▤</span> Past results</button>
+  </nav>
+  <div class="side-bottom"><p>Simulated trades.<br>No wallet or real orders.</p><a class="side-about" href="#about" data-view="about">About Flytrader</a></div>
+</aside>
+<div class="workspace">
+<header><span>Flytrader <span class="slash">/</span> <strong id="breadcrumb">Pump.fun trials</strong></span><span class="header-note">MaleCNS v1.0 <span>·</span> Experimental model</span></header>
+<main>
+  <div class="public-read-only" id="public-mode" hidden><strong id="public-mode-status">Public shared lab</strong><span id="public-mode-copy">Checking server status…</span></div>
+  <div class="heading"><div><h1 id="page-title">Flytrader Lab</h1><p id="page-subtitle">Train on active Pump.fun coins and watch the model work.</p></div><button class="text-button" id="help-toggle" aria-expanded="false">How does this work? ⓘ</button></div>
+  <div class="help-box" id="help-box" hidden><strong>Start with a paper trial</strong><p>Press Start trading &amp; learning to follow new Pump.fun coins until you press Stop. Learning is saved and reused on the next session. Quick trial replays saved prices as a separate experiment. The dashboard shows training progress, simulated orders, your paper balance, and the neurons processing each observation. Replay lab compares models using saved recordings.</p><p>The map shows computed values inside our mathematical model. It does not measure a living fly's thoughts or biological firing.</p></div>
+  <div id="error" role="alert" hidden></div><div id="success" role="status" hidden></div>
+  <section class="operation-strip" id="operation-strip" hidden aria-label="Current operation"><span class="status-dot"></span><div><strong id="operation-title">Working…</strong><span id="operation-detail"></span></div><progress id="operation-progress" max="100" value="0" aria-label="Operation progress"></progress><button class="danger" id="stop-button">Stop</button></section>
+
+  <section class="view" id="trial">
+    <div id="trial-brain-slot"></div>
+    <section class="panel market-analysis" id="trial-market-analysis" aria-label="Chart context and risk checks">
+      <div class="panel-head"><div><div class="eyebrow">WHAT THE BRAIN IS CONSIDERING</div><h3 id="market-trend">Waiting for a price</h3></div></div>
+      <div class="market-facts"><div><small>1 / 5 / 15 minute change</small><strong id="market-returns">—</strong></div><div><small>Market cap · SOL</small><strong id="market-cap">—</strong></div><div><small>Available quote reserves · SOL</small><strong id="market-reserves">—</strong></div><div><small>Largest checked token account</small><strong id="market-holder">Unknown</strong></div></div>
+      <p id="market-history"></p><p id="market-timing"></p><ul id="market-risk-reasons"></ul><p id="market-risk-unknown"></p>
+      <small>Market cap is price × minted supply, not available liquidity. These checks flag observed conditions; they cannot predict or exclude a future rug pull. Ownership may be split across accounts.</small>
+    </section>
+    <section id="trial-dashboard" class="panel trial-dashboard" aria-label="Paper trial progress">
+      <div class="trial-status-row"><div><div class="eyebrow" id="trial-source-label">PUMP.FUN · PAPER ONLY</div><h2 id="trial-phase" aria-live="polite">Ready for your first trial</h2><p id="trial-coin-detail">Start a trial to see the model’s decisions and simulated trades here.</p></div><button type="button" class="danger" id="stop-trial" hidden>Stop trial</button></div>
+      <progress id="trial-progress" max="100" value="0" aria-label="Current coin trial progress"></progress>
+      <div class="trial-freshness" id="trial-freshness">Quick trials replay saved market observations. Live trials wait for fresh network prices.</div>
+      <div id="trial-coin-health" class="trial-coin-health" hidden><strong id="coin-health-title"></strong><p id="coin-health-detail"></p><small id="coin-health-rule"></small><a href="https://pump.fun/explore" target="_blank" rel="noopener noreferrer">Explore coins on Pump.fun ↗</a></div>
+      <section id="focused-coin-chart" class="focused-coin-chart" aria-label="Focused coin price chart" hidden>
+        <div class="coin-chart-heading"><div><div class="eyebrow">COIN IN FOCUS</div><h3><a id="coin-chart-title" target="_blank" rel="noopener noreferrer"></a></h3></div><div class="coin-chart-value"><strong id="coin-chart-price">—</strong><small id="coin-chart-change"></small></div></div>
+        <div class="coin-chart-controls"><label>Coin to inspect<select id="coin-chart-select"></select></label><label>Chart range<select id="coin-chart-range"><option value="0">Entire recorded history</option><option value="5">Latest 5 minutes</option><option value="15">Latest 15 minutes</option><option value="60">Latest hour</option></select></label></div>
+        <canvas id="coin-chart-canvas" role="img" tabindex="0" aria-label="Focused coin price chart"></canvas>
+        <p id="coin-chart-hover" class="coin-chart-hover" aria-live="off"></p>
+        <div class="coin-chart-legend"><span>Line: recorded price change</span><span class="positive">B: paper buy</span><span class="negative">S: paper sell</span><span>Dashed line: neuron frame</span></div>
+        <p id="coin-chart-note"></p><p class="coin-chart-instructions">Hover to inspect prices. In saved sessions, click a price to show the nearest recorded neuron frame. Prices are reserve snapshots; all orders are simulated.</p>
+      </section>
+      <div class="trial-metrics">
+        <div><small>Paper equity</small><strong id="trial-equity">10.0000 <span>SOL</span></strong><p id="trial-cash">Starting balance · simulated</p></div>
+        <div><small>Net profit / loss</small><strong id="trial-pnl">—</strong><p id="trial-realized">After assumed trading costs</p></div>
+        <div><small>Closed paper trades</small><strong id="trial-trades">0</strong><p id="trial-wins">No trades yet</p></div>
+        <div><small>Position</small><strong id="trial-position">In cash</strong><p id="trial-exposure">No open paper position</p></div>
+      </div>
+      <div class="trial-decision"><span>MODEL DECISION</span><strong id="trial-decision">Waiting to start</strong><small id="trial-signal">The model can choose to stay in cash.</small></div>
+      <section class="reward-circuit" id="reward-circuit" aria-label="Reward circuit learning" hidden>
+        <div class="panel-head"><div><div class="eyebrow">MUSHROOM BODY · REWARD TRAINING</div><h3 id="reward-decision">Waiting for a training trade</h3></div><span class="badge" id="reward-gain"></span></div>
+        <div class="trial-metrics"><div><small>Last closed-trade reward</small><strong id="reward-outcome">—</strong><p id="reward-error">Teaching begins after a sale</p></div><div><small>Connections changed</small><strong id="reward-changed">0</strong><p id="reward-weights"></p></div><div><small>Approach / avoidance</small><strong id="reward-opponents">—</strong><p id="reward-bias"></p></div><div><small>Sparse market pattern</small><strong id="reward-sparsity">—</strong><p id="reward-regime"></p></div></div>
+        <div class="dopamine-meters"><label>PAM activity <progress id="pam-activity" max="1" value="0"></progress><span id="pam-value">0.000</span></label><label>PPL1 activity <progress id="ppl-activity" max="1" value="0"></progress><span id="ppl-value">0.000</span></label></div>
+        <p id="reward-cells"></p><p id="reward-actions"></p>
+        <div class="reward-inspect"><span>Inspect actual cells:</span><button type="button" class="text-button" data-circuit-filter="PAM">PAM</button><button type="button" class="text-button" data-circuit-filter="PPL1">PPL1</button><button type="button" class="text-button" data-circuit-filter="MBON">Outputs</button></div>
+        <small>Chart → sparse Kenyon cells → approach / avoidance outputs. Positive surprise weakens avoidance; negative surprise weakens approach. Entry conditions retain the strongest memory trace. Roles are assigned using recorded dopamine inputs as an engineering abstraction; this is not a validated biological valence map. Exits use separate timing and risk rules.</small>
+      </section>
+      <section class="trial-learning" id="trial-learning" aria-label="Learning progress" hidden>
+        <div class="panel-head"><div><div class="eyebrow">LEARNING MEMORY</div><h3 id="learning-status">Waiting for observed outcomes</h3></div></div>
+        <div class="trial-metrics"><div><small>Outcomes learned</small><strong id="learning-examples">0</strong><p id="learning-session">0 this session</p></div><div><small id="learning-comparison-label">Compared with predicting no price change</small><strong id="learning-error">Collecting data</strong><p id="learning-baseline">Waiting for predictions to mature</p></div></div>
+        <p id="learning-latest">New outcomes update the model only after their prices arrive.</p>
+        <p class="muted" id="learning-scope">Learning is scored using predictions made before the outcome.</p>
+      </section>
+      <p id="trial-unresolved" class="trial-freshness" hidden></p>
+      <div class="trial-frame-note" id="trial-frame-note">The activity map and paper account follow the same price observation.</div>
+      <details class="trial-coins-details"><summary>Coins in this session</summary><div class="trial-coin-list" id="trial-coin-list"></div></details>
+    </section>
+    <section id="trial-summary" class="panel trial-summary" aria-label="Whole session results" tabindex="-1" hidden>
+      <div class="panel-head"><div><div class="eyebrow">WHOLE SESSION RESULTS</div><h2 id="summary-headline">Session finished</h2><p id="summary-duration"></p></div><span class="badge neutral" id="summary-status"></span></div>
+      <div class="summary-outcomes">
+        <div><small>Did it make money?</small><strong id="summary-profit"></strong><p id="summary-balance"></p></div>
+        <div><small>Did it trade?</small><strong id="summary-orders"></strong><p id="summary-fills"></p></div>
+        <div><small>Did it learn?</small><strong id="summary-learning"></strong><p id="summary-memory"></p></div>
+      </div>
+      <div class="summary-explanation"><h3 id="summary-reason-title">What happened</h3><p id="summary-reason"></p><p id="summary-market"></p></div>
+      <div class="summary-quality" id="summary-quality"><h3 id="summary-quality-title"></h3><p id="summary-quality-detail"></p></div>
+      <details class="summary-details"><summary>Decision breakdown</summary><div id="summary-decisions"></div><p id="summary-coverage" class="muted"></p></details>
+      <div class="summary-actions"><button type="button" class="secondary" id="summary-inspect">View coin chart &amp; neurons ↗</button><p>These totals cover the whole session. Timeline playback below shows individual observations.</p></div>
+    </section>
+    <section class="panel learning-review" id="learning-review" aria-label="Learning check">
+      <div class="panel-head"><div><div class="eyebrow">TEST THE LEARNING</div><h2>Is the training helping?</h2><p>Compare fresh copies of the circuit on recorded coins they did not train on.</p></div><button type="button" class="secondary" id="run-learning-check" disabled>Check learning ↗</button></div>
+      <p id="learning-check-ready">Checking available recordings…</p>
+      <p class="muted">Runs locally with three random seeds and the current trial settings. The saved live brain stays unchanged. Allow a few minutes.</p>
+      <div id="learning-check-result" hidden>
+        <label>Saved learning check<select id="learning-check-history"></select></label>
+        <h3 id="learning-check-verdict" aria-live="polite"></h3><p id="learning-check-sample"></p>
+        <div class="table-wrap"><table><caption>Paper results on the same unseen coins · average across seeds</caption><thead><tr><th>POLICY</th><th>NET P/L · SOL</th><th>COSTS · SOL</th><th>CLOSED TRADES</th></tr></thead><tbody id="learning-check-scores"></tbody></table></div>
+        <p id="learning-check-circuit"></p><p id="learning-check-limits" class="muted"></p>
+        <details><summary>What this check measures</summary><p>The first 60% of recorded coins supply earlier training data. Testing uses later coins absent from that training set. Learning is frozen while testing. Exploration remains enabled, and fees, reserve impact, timing and risk limits still apply. “Output learning only” keeps synaptic weights fixed and chooses learned entries from its outcome predictor without the opponent gate.</p><p id="learning-check-settings"></p><p id="learning-check-files"></p></details>
+      </div>
+    </section>
+    <section class="panel trial-ledger"><div class="panel-head"><div><h2>Paper trade history</h2><p id="trial-ledger-note">Buys and sells appear here when they are simulated.</p></div><button class="text-button" id="trial-all-trades" type="button" hidden>Show all trades</button></div><div class="table-wrap"><table><thead><tr><th>OBSERVATION</th><th>COIN</th><th>ACTION</th><th>FILL · SOL/TOKEN</th><th>AMOUNT · SOL</th><th>REALIZED P/L · SOL</th></tr></thead><tbody id="trial-ledger-body"><tr><td colspan="6" class="empty">No paper orders yet. Training never places orders.</td></tr></tbody></table></div></section>
+    <p class="trial-footnote">All orders are simulated. Prices are reserve-ratio snapshots with assumed costs, not executable quotes. Live trials support native-SOL Pump curves, canonical PumpSwap pools, and verified SOL-paired Raydium CLMM pools. Unsupported exchanges or quote tokens are reported explicitly.</p>
+    <section class="panel"><div class="panel-head"><div><h2>Previous trials</h2><p>Reopen a session to inspect its trades and recorded neuron activity.</p></div></div><div id="trial-history" class="trial-history"><p>No trials saved yet.</p></div></section>
+  </section>
+
+  <section class="view" id="experiment" hidden>
+    <form id="replay-form" class="run-controls">
+      <label><span class="step-label"><b>1</b> Brain to use</span><select id="replay-edges" name="edges" required></select><small id="graph-summary">Loading brain…</small></label>
+      <label><span class="step-label"><b>2</b> Price recording</span><select id="replay-bars" name="bars" required></select><small id="data-summary">Loading recordings…</small></label>
+      <div class="run-action"><span class="step-label"><b>3</b> Watch it run</span><button class="primary" id="run-button" type="submit">Run paper test <span>↗</span></button><small id="run-hint">Simulated trades · typically 5–20 seconds</small></div>
+      <details class="run-options"><summary>Test settings</summary><div class="options-row"><label>Cost per side · basis points<input name="cost" type="number" value="150" min="0" max="9999" required><small>150 bps = 1.5% assumed fees and slippage.</small></label><label class="check"><input id="watch-run" type="checkbox" checked> Slow the run so I can watch activity</label><span class="settings-note">70% training / 30% test · 5% capital per trade · 10% closed-trade drawdown halt</span></div></details>
+    </form>
+    <div class="empty-start" id="empty-start" hidden><strong>Let’s get your first recording.</strong><p>Record Pump.fun prices as they arrive, then return here to compare models on the saved history.</p><button class="secondary" data-view="capture">Record Pump.fun prices ↗</button></div>
+
+    <div id="replay-brain-slot"></div>
+    <section class="brain-panel" aria-label="Brain activity viewer">
+      <div class="brain-head"><div><h2>Neuron activity</h2></div></div>
+      <div class="brain-layout">
+        <div class="map-area">
+          <canvas id="brain-canvas" tabindex="0" role="img" aria-label="Interactive neuron activity map. Drag or use arrow keys to rotate. Scroll or use plus and minus to zoom. Select a neuron using the list alongside the map."></canvas>
+          <div class="map-caption"><span id="brain-layout-label">Loading anatomy…</span><span>Drag to rotate · scroll to zoom</span><span id="fly-mode-note" hidden>Cutaway fly fitted around real anatomy · background context hidden · typing is decorative</span></div>
+          <div class="map-legend"><span class="legend-negative"></span> Negative <span class="legend-zero"></span> Near zero <span class="legend-positive"></span> Positive <span class="legend-context"></span> Context only</div>
+          <div class="map-toggles"><label class="check"><input id="show-context" type="checkbox" checked> Anatomical context</label><label class="check"><input id="show-links" type="checkbox"> Connections</label><label class="scale-label">Color range<select id="color-range" title="Auto contrast shows small states clearly. Values beyond the displayed range use the strongest color; model values are unchanged."><option value="auto">Auto contrast</option><option value="0.1">±0.10</option><option value="1">±1.00</option><option value="0.01">±0.01</option></select></label></div><p class="activity-scale" id="activity-scale">Auto contrast adapts to the displayed states.</p>
+          <div class="brain-activity-tools" role="group" aria-label="Neuron map controls">
+            <div class="map-toolbar"><div class="segmented"><button type="button" id="focus-all" class="selected">Fly View</button><button type="button" id="focus-subset">Neural Map</button></div><button class="icon-button" id="reset-camera" title="Reset map view">Reset view ↺</button></div>
+            <div class="activity-status"><div><strong id="activity-observation">Waiting for a model update</strong><small id="activity-freshness">The map advances when a new price is processed.</small></div><div><strong id="activity-changes">No comparison yet</strong><small id="activity-comparison">Changes appear after two observations.</small></div></div>
+            <div class="activity-motion"><label class="check"><input id="animate-activity" type="checkbox" checked> Animate changes</label><small id="activity-animation-status">Waiting for measured changes.</small></div>
+          </div>
+        </div>
+        <aside class="neuron-inspector"><h3>Inspect a displayed neuron</h3><p>Click a dot or choose a cell below.</p><label class="sr-only" for="neuron-search">Filter displayed neurons by ID or type</label><input id="neuron-search" placeholder="Search displayed ID or cell type…"><label class="sr-only" for="neuron-select">Select neuron</label><select id="neuron-select"><option value="" selected>None</option></select><div class="neuron-value"><span id="neuron-type">No neuron selected</span><strong id="neuron-state">—</strong><small>Model activation · range −1 to +1</small></div><dl><dt>Cell ID</dt><dd id="neuron-id">—</dd><dt>Side</dt><dd id="neuron-side">—</dd><dt>Position</dt><dd id="neuron-position">—</dd></dl><h3>Largest displayed activations</h3><div id="top-neurons" class="top-neurons">Run a test to see activity.</div><p class="map-note" id="unlocated-note"></p></aside>
+      </div>
+    <form id="trial-form" class="panel trial-controls" aria-labelledby="start-trades-title">
+      <div class="panel-head"><div><h2 id="start-trades-title">Start Trades Here</h2></div></div>
+      <div class="trial-start-row">
+        <label>Mode<select name="source" id="trial-source"><option value="continuous" selected>Continuous · live prices + learning</option><option value="recordings">Quick trial · saved Pump.fun prices</option><option value="live">Limited trial · live prices</option></select></label>
+        <label id="trial-coins-label" hidden>Coins to try<select name="coins" id="trial-coins"><option value="1">1 coin</option><option value="3" selected>Up to 3 coins</option><option value="5">Up to 5 coins</option></select></label>
+        <div id="trial-continuous-note"><strong>Runs until you press Stop</strong><small>Learning is saved automatically.</small></div>
+        <button class="primary" type="submit" id="start-trial">Start paper trial <span>▶</span></button>
+      </div>
+      <div class="coin-choice-row">
+        <label class="trial-live-setting">Coin selection<select name="coin_policy" id="coin-policy"><option value="auto">Find active coins automatically</option><option value="first">Start with my coin, then rotate</option><option value="pin">Stay on my coin until Stop</option></select></label>
+        <label class="trial-live-setting trial-mint-field" id="coin-input-label" hidden>Pump.fun Solana coin link or mint<input name="mint" id="trial-mint" placeholder="https://pump.fun/coin/… (Solana) or a Solana mint address" maxlength="500"><small id="coin-input-hint">Supports native-SOL Pump curves, canonical PumpSwap pools, and verified SOL-paired Raydium CLMM pools (Base58 mints). EVM tokens (0x…) are not supported.</small></label>
+      </div>
+      <div class="reward-settings" id="reward-settings">
+        <label>Training style<select name="profile" id="training-profile"><option value="mushroom-body-reward-v1" selected>Active exploration · learns from paper trades</option><option value="chart-context-v1">Conservative · waits for price forecasts</option></select></label>
+        <label class="reward-knob">Exploration<select name="exploration"><option value="0.15">Occasional · 15%</option><option value="0.35" selected>Active · 35%</option><option value="0.65">Frequent · 65%</option></select></label>
+        <label class="reward-knob">Positive teaching gain<select name="reward_gain"><option value="1">Standard · 1×</option><option value="1.5" selected>Higher · 1.5×</option><option value="2">High · 2×</option></select></label>
+      </div>
+      <p id="trial-source-hint">Checking saved Pump.fun prices…</p>
+      <p id="server-update-note" class="negative" hidden>The new controls need a dashboard restart after the current session ends. The running session keeps its existing settings.</p>
+      <div class="trial-model-line"><button type="button" class="text-button" id="view-trial" disabled>View trial progress ↗</button></div>
+      <details class="trial-settings"><summary>Trial settings</summary><div class="trial-settings-grid">
+        <label>Starting paper balance · SOL<input name="capital" type="number" value="10" min="0.01" max="1000000" step="0.01" required></label>
+        <label>Assumed cost per side · bps<input name="cost" type="number" value="150" min="0" max="9999" required><small>150 bps = 1.5%. A simulation assumption.</small></label>
+        <label class="trial-live-setting" hidden><span id="observation-count-label">Live observations before switching coins</span><select name="count"><option value="120">120 · about 20 minutes</option><option value="300">300 · about 50 minutes</option><option value="720">720 · about 2 hours</option><option value="1000">1,000 · about 2 hours 47 minutes</option></select></label>
+        <label class="trial-live-setting" hidden>Brain / price update interval · seconds<input name="interval" type="number" min="10" max="3600" value="10" required><small>The brain evaluates every fresh quote. Public RPC minimum: 10 seconds. Chart animation does not create extra decisions.</small></label>
+        <label class="trial-live-setting" hidden>Minimum market cap · SOL<input name="min_cap_sol" type="number" value="100" min="0" max="1000000" step="1" required><small>Price × minted supply, expressed in SOL. Larger market cap does not guarantee safety.</small></label>
+        <label class="trial-live-setting" hidden>Minimum real reserves · SOL<input name="min_reserves_sol" type="number" value="10" min="0" max="1000000" step="1" required><small>Checked on every quote. Paper order size is also limited to 1% of these reserves.</small></label>
+      </div><p>Automatic mode rotates after this many observations or when prices go quiet. Pinned mode stays on your coin and keeps its neuron state. Active exploration uses 1% of cash per probe, up to 3% for learned entries, and chooses 30 / 60 / 180-second holds. Conservative mode uses up to 5% and holds for one price interval. All entries wait for the next fresh quote; risk or end-of-segment exits can shorten a hold. A 10% closed-trade drawdown pauses new entries.</p><p>Exploration percentages apply to eligible decisions while in cash. Active mode also tries an initial probe and one after three eligible minutes without an entry. Market checks and cash limits still apply. Each training style and gain has separate saved memory.</p></details>
+    </form>
+      <div class="trial-map-summary" id="trial-map-summary"><div><small id="trial-map-phase">PAPER TRIAL</small><strong id="trial-map-equity">10.0000 SOL</strong><small id="trial-map-learning" hidden></small></div><div><small>NET PROFIT / LOSS</small><strong id="trial-map-pnl">—</strong></div><div><small>CLOSED TRADES</small><strong id="trial-map-trades">0</strong></div><div class="trial-map-decision"><small>DECISION AT THIS OBSERVATION</small><strong id="trial-map-decision">Waiting to start</strong></div></div>
+      <div class="timeline"><div class="price-caption">INPUT PRICE <span>Marker follows the selected observation</span></div><canvas id="price-canvas" role="img" aria-label="Input price history with a marker at the displayed neuron activity frame"></canvas><div class="timeline-top"><strong id="brain-status" aria-live="polite">Ready to run</strong><span id="brain-step">No recorded activity yet</span></div><div class="playback"><button id="play-activity" class="secondary" disabled>Play activity</button><input id="frame-slider" type="range" min="0" max="0" value="0" aria-label="Recorded activity frame" disabled><select id="play-speed" aria-label="Activity playback speed"><option value="120">1× speed</option><option value="60">2× speed</option><option value="240">½× speed</option></select></div><div class="timeline-bottom"><span id="brain-clock">A frame is one market observation processed by the model.</span><span id="brain-price"></span></div></div>
+      <div class="brain-footnote">Colors are actual model states, not biological spikes. Gray dots are uncolored anatomical context. Lines connect displayed cell bodies; they do not trace neural branches. <span id="brain-context-note"></span></div>
+    </section>
+  </section>
+
+  <section class="view" id="capture" hidden><div class="two-col"><section class="panel form-panel"><span class="badge neutral">LIVE RECORDING</span><h2>Record Pump.fun prices</h2><p>Collect new prices from the public Solana network.</p><form id="capture-form"><label>Token mint <span class="muted">optional</span><input name="mint" placeholder="Paste a token address, or leave blank"><small>Blank means the next newly created token. This is data collection, not a recommendation.</small></label><label>Recording length<select name="count"><option value="120">About 20 minutes · 120 prices</option><option value="300">About 50 minutes · 300 prices</option></select></label><details><summary>Advanced recording settings</summary><label>Seconds between prices<input name="interval" type="number" min="10" max="3600" value="10" required></label></details><button class="primary" type="submit">Start recording <span>↗</span></button></form></section><section class="explain-panel"><span class="large-step">⌁</span><h2>Recording takes time.</h2><p>Keep the local server running. You can stop whenever you like; completed prices stay saved. A replay needs at least 100 prices.</p><div class="callout">This recorder only saves prices. Use Pump.fun trials to run the brain and paper account as fresh prices arrive. These snapshots use reserve ratios, not executable prices. Volume is unavailable.</div></section></div></section>
+  <section class="view" id="connectome" hidden><div class="notice"><strong>Server-sized connectome circuit.</strong><p id="full-model-note">Loading available model sizes…</p></div><div class="two-col"><section class="panel form-panel"><h2>Brain library</h2><label>Selected brain<select id="active-graph"></select></label><div id="graph-details"></div><button class="secondary" data-view="experiment">Use this brain ↗</button><details class="full-build-options"><summary>Build the full model again</summary><p>Compile every annotated neuronal superclass and its connections from the downloaded MaleCNS source. This creates a new sparse graph file.</p><button class="secondary" id="build-full-button" type="button">Build full model</button></details></section><section class="panel form-panel"><h2>Prepare a small circuit</h2><p>Optional: choose a subset of up to 2,000 cells for faster comparisons.</p><form id="prepare-form"><label>Cell-type expression<input name="pattern" value="^(MBON|APL|PAM|PPL)" required maxlength="200"><small>The default selects MBON, APL, PAM, and PPL cell types.</small></label><label>Maximum cells in this small circuit<input name="limit" type="number" min="1" max="2000" value="2000" required></label><button class="primary" type="submit">Prepare subset <span>↗</span></button></form></section></div><details class="panel demo-panel"><summary>Try synthetic demo data</summary><p>A generated graph and price series for checking the tool. Not real fly or market data.</p><button class="secondary" id="demo-button">Create demo data</button></details></section>
+  <section class="view" id="history" hidden><section class="panel"><div class="panel-head"><div><h2>Saved paper tests</h2><p>Open a result to compare models or play back saved neuron activity.</p></div></div><div class="table-wrap"><table><thead><tr><th>RECORDING</th><th>NEURONS</th><th>SIMULATED RETURN</th><th>TRADES</th><th></th></tr></thead><tbody id="recent-reports"></tbody></table></div></section></section>
+  <section class="view" id="about" hidden>
+    <section class="panel about-panel" aria-labelledby="about-title">
+      <div class="about-header">
+        <h2 id="about-title">What is This?</h2>
+      </div>
+      <div class="about-copy">
+        <p>In short, it’s a “fly brain” that trades, and learns from trading. In more detail, it’s a hookup of a computational graph of the male fly’s nervous system, called <a href="https://www.janelia.org/project-team/flyem/male-cns-connectome" target="_blank" rel="noopener noreferrer">MaleCNS</a>, to activity on Pump.fun.</p>
+        <div class="about-stats" aria-label="MaleCNS model size">
+          <div><strong>166,700</strong><span>neurons</span></div>
+          <div><strong>25,582,938</strong><span>directed connections</span></div>
+          <div><strong>124,177,617</strong><span>synaptic contacts</span></div>
+        </div>
+        <p>The nervous system updates on every observable price change, which is every 10 seconds, since pulling the data faster than that would get me rate limited. I could probably pull data faster, but for now, I think 10 seconds is fine. I modeled the reward and punishment system on how that works in flies, but whether this works better for this sort of task or not, I am not sure. This is something I will probably look more into, over time.</p>
+        <p>The actual inside-out of how this works programmatically is dense, and I am a mere vibe coder. I had GPT Astra code out the interface between Pump.fun and MaleCNS. This is what it had to say:</p>
+        <blockquote class="about-quote">
+          <p><strong>Full connectome:</strong> The default model contains 166,700 neurons, 25,582,938 directed connections, and 124,177,617 synaptic contacts. It retains every annotated neuronal superclass except glia and unresolved objects.</p>
+          <p><strong>Neural propagation:</strong> Every confirmed price observation updates all 166,700 neuron states. Activity travels along the real MaleCNS connection directions. Raw contact counts are normalized to keep the recurrent network stable, then passed through bounded <code>tanh</code> dynamics.</p>
+          <p><strong>Market input:</strong> Price movement, momentum, volume, market regime, and risk context are converted into artificial sensory signals. In the current reward model, these signals enter through real MaleCNS Kenyon cells, with about 5% activated for each observation.</p>
+          <p><strong>Decision circuit:</strong> The action model reads actual MBON states produced by the graph. It predicts the net return for 30, 60, and 180-second paper positions. Those estimates, exploration, market checks, liquidity limits, and rug-risk rules determine whether it paper-buys.</p>
+          <p><strong>Learning:</strong> Completed paper trades generate a prediction error. Profitable surprise activates the engineered PAM reward pathway; negative surprise activates PPL1. That signal modifies only connections that genuinely exist from KC neurons to MBON neurons in MaleCNS. The current full graph has 61,210 trainable KC→MBON connections.</p>
+          <p><strong>Visualization:</strong> The browser shows a fixed sample of 2,000 neurons because drawing all 166,700 would be impractical. Their positions come from MaleCNS soma coordinates, and their colors are real model states. The other neurons still compute even though they are not displayed.</p>
+          <p><strong>Reward and Punishment:</strong> In the fly mushroom body, sensory/context patterns are sparsely represented by Kenyon cells (KCs); reward-related PAM dopamine neurons and punishment-related PPL1 dopamine neurons modify different KC→MBON pathways. Reward tends to suppress avoidance output for the associated cue, while punishment suppresses approach output. The model emphasizes this circuitry, as opposed to using the CNS at random.</p>
+        </blockquote>
+        <p>The fly is not very good at trading at this time. I am not really thinking that the fly will ever become good at trading. If it did become good, I would be living quite comfortably. :)</p>
+      </div>
+    </section>
+  </section>
+  <section class="panel results" id="results" hidden><div class="panel-head"><div><div class="eyebrow">PAPER TEST COMPLETE</div><h2 id="result-name">Results</h2></div><button class="text-button" id="close-results">Close ×</button></div><div id="result-content"></div></section>
+</main></div>
+</body></html>

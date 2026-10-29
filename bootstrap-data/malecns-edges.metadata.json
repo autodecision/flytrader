@@ -1,0 +1,10 @@
+{
+  "dataset": "male-cns:v1.0",
+  "source": "https://male-cns.janelia.org/download/",
+  "license": "CC-BY",
+  "attribution": "MaleCNS collaboration: HHMI Janelia, Cambridge, MRC LMB, Google Research",
+  "type_regex": "^(MBON|APL|PAM|PPL)",
+  "matched_neurons": 439,
+  "edges": 14020,
+  "selection": "Induced subgraph; experimental selection, not a validated trading circuit"
+}

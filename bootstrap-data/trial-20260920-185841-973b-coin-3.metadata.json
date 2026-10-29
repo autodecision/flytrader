@@ -1,0 +1,23 @@
+{
+  "mint": "21La252xiAfugNfaa7B7MTRaR2AQ97wvzmvixznMpump",
+  "kind": "reserve-price-snapshots",
+  "quote_currency": "SOL per token",
+  "bonding_curve": "BVEqoLFCkMnQsaecQJRa9KNrCfbMGxD2HXkQ9vpaoXmB",
+  "interval_seconds": 10.0,
+  "volume": "Unavailable; zero disables the volume input",
+  "observations": 120,
+  "selection": {
+    "mint": "21La252xiAfugNfaa7B7MTRaR2AQ97wvzmvixznMpump",
+    "listed_last_trade": 1789933156.0,
+    "listed_real_sol": 0.0,
+    "listed_market_cap_sol": 2497594.5804533665,
+    "name": "usdf   United ",
+    "symbol": "USDF",
+    "source": "Pump.fun Explore \u00b7 last trade",
+    "url": "https://pump.fun/explore",
+    "probe_prices": 3,
+    "probe_changes": 2
+  },
+  "activity_screening": true,
+  "market_path": "data/trial-20260920-185841-973b-coin-3.market.jsonl"
+}

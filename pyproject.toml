@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "flytrader"
+version = "0.1.0"
+description = "Connectome-inspired paper-trading research"
+requires-python = ">=3.11"
+dependencies = ["numpy>=2.2", "scipy>=1.15"]
+
+[project.optional-dependencies]
+connectome = ["neuprint-python>=0.6", "pyarrow>=19"]
+market = ["solders>=0.29", "websockets>=15"]
+
+[project.scripts]
+flytrader = "flytrader.cli:main"
+flytrader-gui = "flytrader.gui:main"
+
+[tool.setuptools.packages.find]
+include = ["flytrader*"]
+
+[tool.setuptools.package-data]
+flytrader = ["static/*"]

@@ -1,0 +1,23 @@
+{
+  "mint": "CzkoFiK1LW2jFEaZNK7x8i9asSebHT9CWyPj7jKapump",
+  "kind": "reserve-price-snapshots",
+  "quote_currency": "SOL per token",
+  "bonding_curve": "5BwH1pZEtRFevSp5wHzeuKqws5jGZqh2jpj831z5jtXY",
+  "interval_seconds": 10.0,
+  "volume": "Unavailable; zero disables the volume input",
+  "observations": 120,
+  "selection": {
+    "mint": "CzkoFiK1LW2jFEaZNK7x8i9asSebHT9CWyPj7jKapump",
+    "listed_last_trade": 1789931960.0,
+    "listed_real_sol": 85.005359057,
+    "listed_market_cap_sol": 4409516.464117432,
+    "name": "USDF",
+    "symbol": "USDF",
+    "source": "Pump.fun Explore \u00b7 last trade",
+    "url": "https://pump.fun/explore",
+    "probe_prices": 3,
+    "probe_changes": 2
+  },
+  "activity_screening": true,
+  "market_path": "data/trial-20260920-185841-973b-coin-2.market.jsonl"
+}
